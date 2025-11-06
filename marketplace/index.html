@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Quantum - E-commerce moderno con prodotti di qualità"
+    />
+    <meta name="theme-color" content="#0f172a" />
+    <title>Quantum - E-commerce del Futuro</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+
+    <link href="style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+      <div class="container-fluid container-max-width">
+        <a class="navbar-brand" href="#" onclick="loadHome(); return false;">
+          <i class="fas fa-atom logo-icon me-2"></i>
+          <span class="brand-text">Quantum</span>
+        </a>
+
+        <button
+          class="navbar-toggler border-0"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <form
+            class="search-form d-none d-lg-flex mx-auto"
+            onsubmit="event.preventDefault(); performSearch()"
+          >
+            <div class="input-group search-input-group">
+              <input
+                type="search"
+                id="navbarSearch"
+                class="form-control"
+                placeholder="Cerca prodotti, brand..."
+                aria-label="Cerca"
+              />
+              <button class="btn btn-primary" type="submit">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+          </form>
+
+          <ul
+            class="navbar-nav ms-auto align-items-lg-center"
+            id="mainNavLinks"
+          >
+            <li class="nav-item d-lg-none mb-2">
+              <form onsubmit="event.preventDefault(); performSearch()">
+                <div class="input-group">
+                  <input
+                    type="search"
+                    id="mobileSearch"
+                    class="form-control"
+                    placeholder="Cerca prodotti..."
+                  />
+                  <button class="btn btn-primary" type="submit">
+                    <i class="fas fa-search"></i>
+                  </button>
+                </div>
+              </form>
+            </li>
+
+            <li class="nav-item">
+              <a
+                class="nav-link nav-icon-link"
+                href="#"
+                onclick="loadHome(); return false;"
+                data-bs-toggle="tooltip"
+                title="Home"
+              >
+                <i class="fas fa-home"></i>
+                <span class="d-lg-none ms-2">Home</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link nav-icon-link"
+                href="#"
+                onclick="loadAdmin(); return false;"
+                data-bs-toggle="tooltip"
+                title="Admin"
+              >
+                <i class="fas fa-user-shield"></i>
+                <span class="d-lg-none ms-2">Admin</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link nav-icon-link position-relative"
+                href="#"
+                onclick="loadCart(); return false;"
+                data-bs-toggle="tooltip"
+                title="Carrello"
+              >
+                <i class="fas fa-shopping-basket"></i>
+                <span class="d-lg-none ms-2">Carrello</span>
+                <span id="cartBadge" class="cart-badge d-none">0</span>
+              </a>
+            </li>
+            <li class="nav-item ms-lg-2">
+              <a
+                class="nav-link btn btn-outline-primary btn-sm"
+                href="#"
+                onclick="logout(); return false;"
+              >
+                <i class="fas fa-sign-out-alt me-1"></i>
+                <span>Logout</span>
+              </a>
+            </li>
+          </ul>
+
+          <ul
+            class="navbar-nav ms-auto align-items-lg-center"
+            id="authNavLinks"
+          >
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="#"
+                onclick="loadRegistration(); return false;"
+              >
+                <i class="fas fa-user-plus me-1"></i> Registrati
+              </a>
+            </li>
+            <li class="nav-item ms-lg-2">
+              <a
+                class="nav-link btn btn-primary btn-sm text-white"
+                href="#"
+                onclick="loadLogin(); return false;"
+              >
+                <i class="fas fa-sign-in-alt me-1"></i> Accedi
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div id="alertContainer" class="alert-container"></div>
+
+    <main class="main-content">
+      <section id="registrationPage" class="page d-none">
+        <div class="hero-section">
+          <div class="container container-max-width">
+            <h1 class="hero-title">Crea il tuo Account</h1>
+            <p class="hero-subtitle">
+              Unisciti a noi per accedere a tutte le funzionalità
+            </p>
+          </div>
+        </div>
+
+        <div class="container container-max-width py-5">
+          <div class="row justify-content-center">
+            <div class="col-lg-8 col-xl-7">
+              <div class="card form-card">
+                <div class="card-body p-4 p-md-5">
+                  <form
+                    id="registrationForm"
+                    onsubmit="saveRegistration(event)"
+                    novalidate
+                  >
+                    <div class="form-section">
+                      <h4 class="form-section-title">
+                        <i class="fas fa-id-card me-2"></i> Dati Personali
+                      </h4>
+
+                      <div class="row">
+                        <div class="col-md-6 mb-3">
+                          <label for="firstName" class="form-label">Nome</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="firstName"
+                            placeholder="Mario"
+                            required
+                            oninput="validateField('firstName', 'text')"
+                          />
+                          <div
+                            id="err-firstName"
+                            class="invalid-feedback"
+                          ></div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <label for="lastName" class="form-label"
+                            >Cognome</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="lastName"
+                            placeholder="Rossi"
+                            required
+                            oninput="validateField('lastName', 'text')"
+                          />
+                          <div id="err-lastName" class="invalid-feedback"></div>
+                        </div>
+                      </div>
+
+                      <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input
+                          type="email"
+                          class="form-control"
+                          id="email"
+                          placeholder="mario.rossi@esempio.com"
+                          required
+                          oninput="validateField('email', 'email')"
+                        />
+                        <div id="err-email" class="invalid-feedback"></div>
+                      </div>
+                    </div>
+
+                    <div class="form-section">
+                      <h4 class="form-section-title">
+                        <i class="fas fa-user-circle me-2"></i> Credenziali
+                        Account
+                      </h4>
+
+                      <div class="mb-3">
+                        <label for="username" class="form-label"
+                          >Username</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="username"
+                          placeholder="mariorossi"
+                          required
+                          oninput="validateField('username', 'text')"
+                        />
+                        <div id="err-username" class="invalid-feedback"></div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-md-6 mb-3">
+                          <label for="password" class="form-label"
+                            >Password</label
+                          >
+                          <div class="password-input-wrapper">
+                            <input
+                              type="password"
+                              class="form-control"
+                              id="password"
+                              placeholder="••••••••"
+                              required
+                              oninput="checkPasswordRequirements(); validateField('password', 'password')"
+                            />
+                            <button
+                              type="button"
+                              class="password-toggle"
+                              onclick="togglePasswordVisibility('password')"
+                            >
+                              <i class="fas fa-eye"></i>
+                            </button>
+                          </div>
+                          <div id="err-password" class="invalid-feedback"></div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <label for="confirmPassword" class="form-label"
+                            >Conferma Password</label
+                          >
+                          <div class="password-input-wrapper">
+                            <input
+                              type="password"
+                              class="form-control"
+                              id="confirmPassword"
+                              placeholder="••••••••"
+                              required
+                              oninput="validateField('confirmPassword', 'confirmPassword')"
+                            />
+                            <button
+                              type="button"
+                              class="password-toggle"
+                              onclick="togglePasswordVisibility('confirmPassword')"
+                            >
+                              <i class="fas fa-eye"></i>
+                            </button>
+                          </div>
+                          <div
+                            id="err-confirmPassword"
+                            class="invalid-feedback"
+                          ></div>
+                        </div>
+                      </div>
+
+                      <div class="password-requirements">
+                        <h6 class="requirements-title">
+                          La password deve contenere:
+                        </h6>
+                        <ul class="requirements-list">
+                          <li id="req1" class="requirement-item">
+                            <i class="fas fa-times"></i> Almeno 8 caratteri
+                          </li>
+                          <li id="req2" class="requirement-item">
+                            <i class="fas fa-times"></i> Una lettera maiuscola
+                          </li>
+                          <li id="req3" class="requirement-item">
+                            <i class="fas fa-times"></i> Un numero
+                          </li>
+                          <li id="req4" class="requirement-item">
+                            <i class="fas fa-times"></i> Un carattere speciale
+                            (!@#$%^&*)
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div class="form-check mb-4">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="terms"
+                        required
+                      />
+                      <label class="form-check-label" for="terms">
+                        Accetto i
+                        <a href="#" class="link-primary"
+                          >Termini e Condizioni</a
+                        >
+                        e la <a href="#" class="link-primary">Privacy Policy</a>
+                      </label>
+                    </div>
+
+                    <button
+                      type="submit"
+                      class="btn btn-primary btn-lg w-100 submit-btn"
+                    >
+                      <i class="fas fa-user-plus me-2"></i> Registrati Ora
+                    </button>
+                  </form>
+
+                  <div class="form-footer">
+                    <p>
+                      Hai già un account?
+                      <a
+                        href="#"
+                        onclick="loadLogin(); return false;"
+                        class="link-primary fw-medium"
+                        >Accedi qui</a
+                      >
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="loginPage" class="page d-none">
+        <div class="hero-section">
+          <div class="container container-max-width">
+            <h1 class="hero-title">Bentornato!</h1>
+            <p class="hero-subtitle">Accedi al tuo account per continuare</p>
+          </div>
+        </div>
+
+        <div class="container container-max-width py-5">
+          <div class="row justify-content-center">
+            <div class="col-lg-5 col-md-7">
+              <div class="card form-card">
+                <div class="card-body p-4 p-md-5">
+                  <form id="loginForm" onsubmit="handleLogin(event)" novalidate>
+                    <div class="mb-4">
+                      <label for="loginUsername" class="form-label">
+                        <i class="fas fa-user me-2"></i> Username
+                      </label>
+                      <input
+                        type="text"
+                        class="form-control form-control-lg"
+                        id="loginUsername"
+                        placeholder="Il tuo username"
+                        required
+                        autofocus
+                      />
+                    </div>
+
+                    <div class="mb-4">
+                      <label for="loginPassword" class="form-label">
+                        <i class="fas fa-lock me-2"></i> Password
+                      </label>
+                      <div class="password-input-wrapper">
+                        <input
+                          type="password"
+                          class="form-control form-control-lg"
+                          id="loginPassword"
+                          placeholder="La tua password"
+                          required
+                        />
+                        <button
+                          type="button"
+                          class="password-toggle"
+                          onclick="togglePasswordVisibility('loginPassword')"
+                        >
+                          <i class="fas fa-eye"></i>
+                        </button>
+                      </div>
+                    </div>
+
+                    <div class="mb-4">
+                      <a href="#" class="link-primary small"
+                        >Password dimenticata?</a
+                      >
+                    </div>
+
+                    <button
+                      type="submit"
+                      id="btnLogin"
+                      class="btn btn-primary btn-lg w-100 submit-btn"
+                    >
+                      <i class="fas fa-sign-in-alt me-2"></i> Accedi
+                    </button>
+                  </form>
+
+                  <div class="form-footer">
+                    <p>
+                      Non hai un account?
+                      <a
+                        href="#"
+                        onclick="loadRegistration(); return false;"
+                        class="link-primary fw-medium"
+                        >Registrati qui</a
+                      >
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="homePage" class="page d-none">
+        <div class="hero-section hero-home hero-quantum">
+          <div class="hero-overlay"></div>
+          <div class="container container-max-width hero-content">
+            <h1 class="hero-title">Benvenuto in Quantum</h1>
+            <p class="hero-subtitle">"Innovazione. Senza rumore."</p>
+          </div>
+        </div>
+
+        <div class="container container-max-width py-5">
+          <div class="text-center my-5">
+            <div
+              id="loadingSpinner"
+              class="spinner-border text-primary d-none"
+              role="status"
+              style="width: 3rem; height: 3rem"
+            >
+              <span class="visually-hidden">Caricamento...</span>
+            </div>
+          </div>
+
+          <div class="row g-4" id="productRow"></div>
+        </div>
+      </section>
+
+      <section id="adminPage" class="page d-none">
+        <div class="hero-section">
+          <div class="container container-max-width">
+            <h1 class="hero-title" id="adminTitle">Gestione Prodotti</h1>
+            <p class="hero-subtitle" id="adminDesc">
+              Aggiungi o modifica i prodotti del catalogo
+            </p>
+          </div>
+        </div>
+
+        <div class="container container-max-width py-5">
+          <div class="row justify-content-center">
+            <div class="col-lg-9 col-xl-8">
+              <div class="card form-card">
+                <div class="card-body p-4 p-md-5">
+                  <form id="productForm" novalidate>
+                    <div class="row">
+                      <div class="col-md-6 mb-4">
+                        <label for="productName" class="form-label"
+                          >Nome Prodotto</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="productName"
+                          placeholder="Es. iPhone 15 Pro"
+                          required
+                        />
+                      </div>
+                      <div class="col-md-6 mb-4">
+                        <label for="productBrand" class="form-label"
+                          >Brand</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="productBrand"
+                          placeholder="Es. Apple"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <div class="mb-4">
+                      <label for="productDesc" class="form-label"
+                        >Descrizione</label
+                      >
+                      <textarea
+                        class="form-control"
+                        id="productDesc"
+                        rows="4"
+                        placeholder="Descrivi il prodotto in dettaglio..."
+                        required
+                      ></textarea>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-8 mb-4">
+                        <label for="productImage" class="form-label"
+                          >URL Immagine</label
+                        >
+                        <input
+                          type="url"
+                          class="form-control"
+                          id="productImage"
+                          oninput="previewImageAdmin()"
+                          placeholder="https://esempio.com/immagine.jpg"
+                          required
+                        />
+                        <small class="form-text text-muted"
+                          >Inserisci l'URL di un'immagine di alta qualità</small
+                        >
+                      </div>
+                      <div class="col-md-4 mb-4">
+                        <label for="productPrice" class="form-label"
+                          >Prezzo (€)</label
+                        >
+                        <div class="input-group">
+                          <span class="input-group-text"
+                            ><i class="fas fa-euro-sign"></i
+                          ></span>
+                          <input
+                            type="number"
+                            class="form-control"
+                            id="productPrice"
+                            placeholder="99.99"
+                            min="0.01"
+                            step="0.01"
+                            required
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div
+                      id="imagePreviewAdmin"
+                      class="image-preview d-none mb-4"
+                    >
+                      <img id="previewImgAdmin" src="#" alt="Anteprima" />
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mt-4">
+                      <button
+                        type="submit"
+                        id="btnCreate"
+                        class="btn btn-primary flex-fill"
+                      >
+                        <i class="fas fa-plus me-2"></i> Crea Prodotto
+                      </button>
+                      <button
+                        type="submit"
+                        id="btnEdit"
+                        class="btn btn-success flex-fill d-none"
+                      >
+                        <i class="fas fa-save me-2"></i> Salva Modifiche
+                      </button>
+                      <button
+                        type="button"
+                        id="btnDelete"
+                        class="btn btn-danger d-none"
+                        onclick="handleAdminDelete()"
+                      >
+                        <i class="fas fa-trash-alt me-2"></i> Elimina
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-outline-secondary"
+                        onclick="resetFormAdmin()"
+                      >
+                        <i class="fas fa-redo-alt me-2"></i> Reset
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="cartPage" class="page d-none">
+        <div class="hero-section">
+          <div class="container container-max-width">
+            <h1 class="hero-title">Il tuo Carrello</h1>
+            <p class="hero-subtitle">
+              Rivedi i prodotti e procedi all'acquisto
+            </p>
+          </div>
+        </div>
+
+        <div class="container container-max-width py-5">
+          <div class="row g-4">
+            <div class="col-lg-8">
+              <div id="cartItemsContainer">
+                <div id="emptyCartMessage" class="empty-cart-card">
+                  <i class="fas fa-shopping-basket"></i>
+                  <h4>Il carrello è vuoto</h4>
+                  <p>Aggiungi prodotti per iniziare i tuoi acquisti</p>
+                  <button class="btn btn-primary" onclick="loadHome()">
+                    <i class="fas fa-shopping-bag me-2"></i> Esplora il Catalogo
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4">
+              <div class="card cart-summary">
+                <div class="card-body p-4">
+                  <h5 class="card-title mb-4">
+                    <i class="fas fa-receipt me-2"></i> Riepilogo Ordine
+                  </h5>
+
+                  <div class="summary-row">
+                    <span>Subtotale:</span>
+                    <span id="cartSubtotal" class="fw-bold">€0.00</span>
+                  </div>
+
+                  <div class="summary-row border-top pt-3 mt-3">
+                    <span class="fs-5 fw-bold">Totale:</span>
+                    <span id="cartTotal" class="fs-4 fw-bold text-success"
+                      >€0.00</span
+                    >
+                  </div>
+
+                  <button
+                    id="checkoutBtn"
+                    class="btn btn-success btn-lg w-100 mt-4 mb-2"
+                    onclick="checkout()"
+                    disabled
+                  >
+                    <i class="fas fa-credit-card me-2"></i> Checkout
+                  </button>
+
+                  <button
+                    class="btn btn-outline-danger w-100"
+                    onclick="clearCart()"
+                  >
+                    <i class="fas fa-trash-alt me-2"></i> Svuota Carrello
+                  </button>
+
+                  <div class="trust-badges mt-4">
+                    <div class="trust-badge">
+                      <i class="fas fa-lock"></i>
+                      <span>Pagamento Sicuro</span>
+                    </div>
+                    <div class="trust-badge">
+                      <i class="fas fa-shipping-fast"></i>
+                      <span>Spedizione Veloce</span>
+                    </div>
+                    <div class="trust-badge">
+                      <i class="fas fa-undo"></i>
+                      <span>Reso Gratuito</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container container-max-width">
+        <div class="row py-5">
+          <div class="col-lg-4 mb-4 mb-lg-0">
+            <h5 class="footer-title">
+              <i class="fas fa-atom me-2"></i> Quantum
+            </h5>
+            <p class="footer-text">
+              La tua destinazione per prodotti di qualità con un'esperienza di
+              acquisto moderna e intuitiva.
+            </p>
+            <div class="social-links d-flex gap-2">
+              <a href="#" aria-label="Facebook"
+                ><i class="fab fa-facebook"></i
+              ></a>
+              <a href="#" aria-label="Instagram"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a href="#" aria-label="Twitter"
+                ><i class="fab fa-twitter"></i
+              ></a>
+              <a href="#" aria-label="LinkedIn"
+                ><i class="fab fa-linkedin"></i
+              ></a>
+            </div>
+          </div>
+
+          <div class="col-lg-2 col-md-4 mb-4 mb-lg-0">
+            <h6 class="footer-subtitle">Acquista</h6>
+            <ul class="footer-links">
+              <li>
+                <a href="#" onclick="loadHome(); return false;">Catalogo</a>
+              </li>
+              <li><a href="#">Offerte</a></li>
+              <li><a href="#">Novità</a></li>
+              <li><a href="#">Best Seller</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-2 col-md-4 mb-4 mb-lg-0">
+            <h6 class="footer-subtitle">Assistenza</h6>
+            <ul class="footer-links">
+              <li><a href="#">Centro Aiuto</a></li>
+              <li><a href="#">Spedizioni</a></li>
+              <li><a href="#">Resi</a></li>
+              <li><a href="#">Contattaci</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-2 col-md-4 mb-4 mb-lg-0">
+            <h6 class="footer-subtitle">Legale</h6>
+            <ul class="footer-links">
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Termini di Servizio</a></li>
+              <li><a href="#">Cookie Policy</a></li>
+              <li><a href="#">Note Legali</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-2">
+            <h6 class="footer-subtitle">Newsletter</h6>
+            <p class="footer-text small">Ricevi le ultime offerte</p>
+            <form
+              class="newsletter-form"
+              onsubmit="event.preventDefault(); alert('Grazie per l\'iscrizione!');"
+            >
+              <input
+                type="email"
+                class="form-control form-control-sm"
+                placeholder="La tua email"
+                required
+              />
+              <button type="submit" class="btn btn-primary btn-sm mt-2 w-100">
+                Iscriviti
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <div class="row align-items-center">
+            <div class="col-md-6 text-center text-md-start mb-2 mb-md-0">
+              <p class="mb-0">
+                &copy; 2024 Quantum. Tutti i diritti riservati.
+              </p>
+            </div>
+            <div class="col-md-6 text-center text-md-end">
+              <img
+                src="https://via.placeholder.com/40x25?text=VISA"
+                alt="Visa"
+                class="payment-icon"
+              />
+              <img
+                src="https://via.placeholder.com/40x25?text=MC"
+                alt="Mastercard"
+                class="payment-icon"
+              />
+              <img
+                src="https://via.placeholder.com/40x25?text=PP"
+                alt="PayPal"
+                class="payment-icon"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
